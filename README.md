@@ -8,6 +8,12 @@
 - **形态**:网页游戏(Python 后端 + 原生 HTML/JS 前端),**一条命令启动**。
 - **没有 API Key 也能完整玩通**——自带预写剧情和 16 张预生成插画;有 Key 时叠加 AI 实时旁白、自由行动和后日谈。
 
+### 演示视频
+
+**[▶ 观看演示视频(约 2 分钟,无声,配字幕)](docs/demo.mp4)**——真实通关两条路线:AI 流式旁白 → 自由行动 → 被锁住的选项 → 两个不同的结局。
+由 `python -m tools.record_demo` 录制:无头浏览器连接真实游戏与真实 GLM,不是动画合成。游戏本身有雨声 / 雷声等环境音(浏览器内实时合成),
+无头录制采不到音频,所以视频是静音的;指针和字幕是录制时临时注入的,不属于游戏。
+
 ### 游戏截图
 
 以下均为**真实游戏画面**:由 `python -m tools.take_screenshots` 驱动无头浏览器、连接真实的 GLM 通关两条路线后截取(不是设计稿,也不是 mock 数据)。
@@ -270,6 +276,8 @@ python -m tools.eval_narration --runs 2            # 统计旁白采纳率与延
 python -m tools.try_act "我直接接电话" --at start   # 试验自由行动解析(需先 python run.py)
 python -m tools.take_screenshots                   # 真实通关两条路线并重新生成 README 截图(需先 python run.py;
                                                    # 另需 playwright 和系统自带的 Edge/Chrome,不必下载内核)
+python -m tools.record_demo                        # 录制演示视频 docs/demo.mp4(额外需要 ffmpeg,以及
+                                                   # `playwright install ffmpeg`——只有约 1 MB 的录屏组件)
 ```
 
 测试覆盖的重点是“会出事的地方”:
