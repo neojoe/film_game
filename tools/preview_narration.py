@@ -19,6 +19,7 @@ from app.story import Story
 
 # 到达各场景的一条代表性路线(含所有前置选择)
 ROUTES: dict[str, list[str]] = {
+    "prologue": [],
     "studio": ["start"],
     "callback": ["start", "cut_song"],
     "live": ["start", "go_live"],
@@ -58,6 +59,8 @@ async def main(node_id: str, epilogue: bool) -> int:
             first = first or time.monotonic() - started
             text.append(event["text"])
         elif event["type"] == "replace":
+            if text:  # 被守卫拒绝的 AI 原文:开发时需要看到它,才能判断是 AI 写偏了还是校验太严
+                print(f"[AI 原文,被拒绝: {event['reason']}]\n{''.join(text)}\n")
             print(f"[降级为预写文本] reason={event['reason']}")
             text = ["\n\n".join(event["paragraphs"])]
         else:

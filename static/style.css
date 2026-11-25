@@ -102,6 +102,8 @@ button { font-family: inherit; }
 /* ------------------------------------------------------------ 覆盖层 */
 .overlay { position: absolute; inset: 0; z-index: 20; display: grid; place-items: center; padding: 20px;
   background: radial-gradient(ellipse at center, rgba(3, 8, 10, 0.55), rgba(3, 8, 10, 0.92)); overflow-y: auto; }
+#title { background: radial-gradient(ellipse at center, rgba(3, 8, 10, 0.38), rgba(3, 8, 10, 0.88)); }
+#ending { background: radial-gradient(ellipse at center, rgba(3, 8, 10, 0.9), rgba(3, 8, 10, 0.97)); }
 .title-card, .ending-card { width: min(640px, 100%); text-align: center; animation: fadeUp 1.2s both; }
 @keyframes fadeUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
 .eyebrow { font-size: 12px; letter-spacing: 8px; color: var(--teal); margin: 0 0 14px; }
@@ -146,6 +148,14 @@ button.ghost:hover { border-color: var(--teal); background: rgba(43, 92, 85, 0.2
   .tool { padding: 5px 9px; font-size: 12px; }
   #panel { bottom: 6vh; max-height: 72vh; padding: 16px; }
   h1 { letter-spacing: 4px; }
+}
+@media (max-height: 700px) {
+  h1 { font-size: clamp(28px, 5vw, 44px); margin-bottom: 12px; }
+  .tagline { margin-bottom: 18px; line-height: 1.7; }
+  .eyebrow { margin-bottom: 8px; }
+  #panel { max-height: 62vh; padding: 14px 20px; }
+  #narration { line-height: 1.8; }
+  .title-actions { margin-bottom: 10px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .bg { animation: none; } .grain { animation: none; } #flash.on { animation: none; }

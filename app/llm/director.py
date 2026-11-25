@@ -37,16 +37,20 @@ KEY_GROUPS: tuple[tuple[str, ...], ...] = (
     ("小满",),
     ("磁带", "录音带"),
     ("铃铛",),
-    ("水闸",),
+    ("钥匙",),
+    ("水闸", "闸门", "开闸"),
     ("江滨坊",),
     ("江滨路",),
     ("互助热线", "热线"),
     ("白板",),
     ("冲锋舟",),
+    ("台风", "海燕"),
+    ("广播大楼", "大楼"),
 )
 # 剧透词:原稿里没出现过的话,AI 也不许自己提前抖出来
 SPOILER_TERMS = ("掐断", "掐的", "咔哒", "尚未经证实")
 KEY_KEEP_RATIO = 0.6
+MIN_GROUPS_TO_ENFORCE = 2  # 只有 1 个关键词的场景,"保留比例"只能是 0% 或 100%,过于脆弱,不据此判定
 
 
 def _compact(text: str) -> str:
@@ -68,7 +72,7 @@ def validate_narration(text: str, authored: list[str]) -> str | None:
             return f"spoiler:{term}"
     groups = [g for g in KEY_GROUPS if any(w in base for w in g)]
     kept = [g for g in groups if any(w in text for w in g)]
-    if groups and len(kept) / len(groups) < KEY_KEEP_RATIO:
+    if len(groups) >= MIN_GROUPS_TO_ENFORCE and len(kept) / len(groups) < KEY_KEEP_RATIO:
         return "missing_facts"
     return None
 

@@ -349,7 +349,9 @@
     $("endingSubtitle").textContent = end.subtitle;
     $("recapList").replaceChildren(...scene.recap.map((m) => { const li = document.createElement("li"); li.textContent = m; return li; }));
     renderGallery(end.id);
+    show($("panel"), false);
     show($("ending"), true);
+    $("ending").scrollTop = 0;
     startEpilogue();
   }
 
@@ -430,6 +432,7 @@
       $("aiBadge").textContent = "服务未连接"; $("aiBadge").className = "badge warn"; return;
     }
     const m = G.meta;
+    setBackground(m.cover);  // 标题页用序幕插画做封面
     $("gameTitle").textContent = m.title;
     $("tagline").textContent = m.tagline;
     const ai = $("aiBadge");

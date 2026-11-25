@@ -112,6 +112,13 @@ def test_validate_narration_rules():
     assert validate_narration(drifted, authored) == "missing_facts"
 
 
+def test_single_keyword_scene_is_not_rejected_for_missing_it():
+    """只有 1 个关键词的场景(如序幕),AI 换种说法不应被整体拒绝。"""
+    authored = ["江滨路尽头亮着最后几扇窗,明天一早推土机就会开进来,今夜是最后一次直播。" * 3]
+    text = "雨幕里,那栋老楼的窗还亮着,明天一早它就要被推平,今夜是它最后的直播。" * 3
+    assert validate_narration(text, authored) is None
+
+
 def test_spoiler_allowed_when_authored_text_contains_it():
     authored = ["磁带里传来咔哒一声,后半句被掐断了,老周和陈岚都沉默了,小满的铃铛响。" * 2]
     assert validate_narration(authored[0], authored) is None

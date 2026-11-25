@@ -117,6 +117,7 @@ def create_app(
             "tagline": story.meta["tagline"],
             "estimated_minutes": story.meta["estimated_minutes"],
             "ai_enabled": llm.enabled,
+            "cover": find_scene_image(story.node(story.start).image),
             "endings": [
                 {"id": e.id, "name": e.name, "kind": e.kind, "subtitle": e.subtitle} for e in story.endings
             ],

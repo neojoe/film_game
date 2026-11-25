@@ -76,7 +76,8 @@ def narration_messages(story: Story, node: Node, state: GameState, authored: lis
         "【任务】以原稿为蓝本,重写成更有电影画面感的旁白:\n"
         "- 保留原稿中的全部事实、人名、关键台词(台词可微调语气,含义不变);\n"
         "- 加入 2-3 个感官细节(雨声、光线、电流声、气味、手上的动作等);\n"
-        "- 自然呼应玩家此前的选择或处境 1-2 处(例如提到 TA 刚刚做过的事),但不要生硬复述;\n"
+        "- 自然呼应玩家此前的选择或处境 1-2 处(例如提到 TA 刚刚做过的事),但不要生硬复述;"
+        "呼应必须忠实于选择的原意,不得夸大或曲解(例如“先切歌、稍后回拨”不能写成“拒绝接听”);\n"
         f"- 总字数 {low}-{high} 字。"
     )
     return [{"role": "system", "content": system_prompt(story)}, {"role": "user", "content": user}]
