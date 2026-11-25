@@ -365,6 +365,8 @@
       return el;
     });
     $("gallery").replaceChildren(...slots);
+    const got = G.meta.endings.filter((e) => unlocked.has(e.id)).length;
+    $("galleryCount").textContent = `${got} / ${G.meta.endings.length} · 金色边框为本局结局`;
   }
 
   function startEpilogue() {
