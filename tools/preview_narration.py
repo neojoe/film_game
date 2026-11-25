@@ -14,7 +14,7 @@ import time
 
 from app.config import load_settings
 from app.llm.client import LLMClient
-from app.llm.director import Director, validate_narration
+from app.llm.director import Director, truth_revealed, validate_narration
 from app.story import Story
 
 # 到达各场景的一条代表性路线(含所有前置选择)
@@ -71,7 +71,8 @@ async def main(node_id: str, epilogue: bool) -> int:
     print(output)
     print(f"\n-- source={source} reason={reason or '-'} 首字 {first and round(first, 1)}s 总计 {time.monotonic() - started:.1f}s")
     if not epilogue and source == "ai":
-        print(f"-- 守卫校验: {validate_narration(output, authored) or 'OK'}  字数 {len(output)} / 原稿 {len(''.join(authored))}")
+        verdict = validate_narration(output, authored, revealed=truth_revealed(state)) or "OK"
+        print(f"-- 守卫校验: {verdict}  字数 {len(output)} / 原稿 {len(''.join(authored))}")
     return 0
 
 

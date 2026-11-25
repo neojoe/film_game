@@ -11,6 +11,7 @@ from app.llm.director import (
     Director,
     extract_json,
     sanitize_player_text,
+    truth_revealed,
     validate_epilogue,
     validate_narration,
 )
@@ -122,6 +123,23 @@ def test_single_keyword_scene_is_not_rejected_for_missing_it():
 def test_spoiler_allowed_when_authored_text_contains_it():
     authored = ["磁带里传来咔哒一声,后半句被掐断了,老周和陈岚都沉默了,小满的铃铛响。" * 2]
     assert validate_narration(authored[0], authored) is None
+
+
+def test_spoiler_allowed_once_truth_is_revealed():
+    """真相揭示之后(结局回顾),AI 复述"掐断"不算剧透;揭示之前仍然拦截。"""
+    authored = ["老周在水闸站握着钥匙,陈岚在直播间里沉默。小满的铃铛响了一下。" * 3]
+    text = authored[0] + "那半句话,当年是被掐断的。"
+    assert validate_narration(text, authored) == "spoiler:掐断"
+    assert validate_narration(text, authored, revealed=True) is None
+
+
+def test_truth_revealed_follows_game_state():
+    story = Story.load()
+    state = story.new_game()
+    assert truth_revealed(state) is False
+    for choice in ("start", "cut_song", "to_archive", "archive_back"):  # 档案室:拿到磁带
+        story.choose(state, choice)
+    assert truth_revealed(state) is True
 
 
 def test_validate_epilogue():

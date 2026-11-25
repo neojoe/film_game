@@ -19,8 +19,8 @@ import json
 import logging
 import re
 import time
-from typing import Any
 from collections.abc import AsyncIterator, Callable
+from typing import Any
 
 from ..config import Settings
 from ..story.engine import GameState, Story
@@ -58,8 +58,16 @@ def _compact(text: str) -> str:
     return "".join(text.split())
 
 
-def validate_narration(text: str, authored: list[str]) -> str | None:
-    """校验 AI 旁白。返回 None 表示合格,否则返回不合格原因。"""
+def truth_revealed(state: GameState) -> bool:
+    """玩家是否已经知道"那半句话被掐断"的真相(拿到磁带 / 陈岚已坦白)。"""
+    return bool(state.variables.get("tape") or state.variables.get("confessed"))
+
+
+def validate_narration(text: str, authored: list[str], *, revealed: bool = False) -> str | None:
+    """校验 AI 旁白。返回 None 表示合格,否则返回不合格原因。
+
+    剧透词只在真相揭示之前才算剧透:揭示之后(结局回顾等),AI 复述它是合理的。
+    """
     base = "".join(authored)
     n, base_n = len(_compact(text)), len(_compact(base))
     if n < base_n * 0.6:
@@ -68,9 +76,10 @@ def validate_narration(text: str, authored: list[str]) -> str | None:
         return "too_long"
     if re.search(r"(^|\n)\s*(#|[-*•]\s|\d+[.、)])", text) or "**" in text or "```" in text:
         return "markdown"
-    for term in SPOILER_TERMS:
-        if term in text and term not in base:
-            return f"spoiler:{term}"
+    if not revealed:
+        for term in SPOILER_TERMS:
+            if term in text and term not in base:
+                return f"spoiler:{term}"
     groups = [g for g in KEY_GROUPS if any(w in base for w in g)]
     kept = [g for g in groups if any(w in text for w in g)]
     if len(groups) >= MIN_GROUPS_TO_ENFORCE and len(kept) / len(groups) < KEY_KEEP_RATIO:
@@ -125,8 +134,10 @@ class Director:
                 yield event
             return
         messages = prompts.narration_messages(self._story, node, state, authored)
+        revealed = truth_revealed(state)
         async for event in self._generate(
-            messages, authored, lambda t: validate_narration(t, authored), max_tokens=900
+            messages, authored, lambda t: validate_narration(t, authored, revealed=revealed),
+            max_tokens=900,
         ):
             yield event
 
