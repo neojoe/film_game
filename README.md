@@ -10,9 +10,14 @@
 
 ### 演示视频
 
-**[▶ 观看演示视频(约 2 分钟,无声,配字幕)](docs/demo.mp4)**——真实通关两条路线:AI 流式旁白 → 自由行动 → 被锁住的选项 → 两个不同的结局。
-由 `python -m tools.record_demo` 录制:无头浏览器连接真实游戏与真实 GLM,不是动画合成。游戏本身有雨声 / 雷声等环境音(浏览器内实时合成),
-无头录制采不到音频,所以视频是静音的;指针和字幕是录制时临时注入的,不属于游戏。
+<p align="center"><img src="docs/demo-preview.gif" alt="演示精华预览(GIF)" width="720"></p>
+
+↑ 精华预览(约 22 秒):AI 流式旁白与自由行动 → 被锁住的选项 → 结局后日谈。
+**完整视频(约 2 分钟,无声,配字幕):[docs/demo.mp4](docs/demo.mp4)**——真实通关两条路线,含两个不同的结局。
+GitHub 页面不能在线播放仓库里的大文件,点开后请点 **Raw / Download** 下载观看。
+
+视频由 `python -m tools.record_demo` 录制:无头浏览器连接真实游戏与真实 GLM,不是动画合成;预览 GIF 由 `python -m tools.make_preview_gif` 从视频里剪取。
+游戏本身有雨声 / 雷声等环境音(浏览器内实时合成),无头录制采不到音频,所以视频是静音的;指针和字幕是录制时临时注入的,不属于游戏。
 
 ### 游戏截图
 
@@ -278,6 +283,7 @@ python -m tools.take_screenshots                   # 真实通关两条路线并
                                                    # 另需 playwright 和系统自带的 Edge/Chrome,不必下载内核)
 python -m tools.record_demo                        # 录制演示视频 docs/demo.mp4(额外需要 ffmpeg,以及
                                                    # `playwright install ffmpeg`——只有约 1 MB 的录屏组件)
+python -m tools.make_preview_gif                   # 从视频剪出 README 内嵌的 GIF 预览(需要 ffmpeg)
 ```
 
 测试覆盖的重点是“会出事的地方”:
