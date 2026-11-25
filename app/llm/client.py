@@ -14,7 +14,7 @@ from __future__ import annotations
 import json
 import logging
 import time
-from typing import AsyncIterator, Callable
+from collections.abc import AsyncIterator, Callable
 
 import httpx
 

@@ -104,7 +104,7 @@ async def main(keys: list[str], force: bool) -> int:
     manifest_path.write_text(
         json.dumps(sorted(manifest.values(), key=lambda e: e["key"]), ensure_ascii=False, indent=2), encoding="utf-8"
     )
-    failed = [k for k, r in zip(todo, results) if r is None]
+    failed = [k for k, r in zip(todo, results, strict=True) if r is None]
     if failed:
         print(f"失败: {failed}(可重跑本命令只补缺失的图)", file=sys.stderr)
         return 2

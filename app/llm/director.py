@@ -19,7 +19,8 @@ import json
 import logging
 import re
 import time
-from typing import Any, AsyncIterator, Callable
+from typing import Any
+from collections.abc import AsyncIterator, Callable
 
 from ..config import Settings
 from ..story.engine import GameState, Story

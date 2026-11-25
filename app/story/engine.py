@@ -150,7 +150,7 @@ class GameState:
     history: list[dict[str, str]] = field(default_factory=list)
     step: int = 0
 
-    def clone(self) -> "GameState":
+    def clone(self) -> GameState:
         return copy.deepcopy(self)
 
 
@@ -174,7 +174,7 @@ class Story:
 
     # ---- 加载
     @classmethod
-    def load(cls, path: str | Path = DEFAULT_STORY_PATH) -> "Story":
+    def load(cls, path: str | Path = DEFAULT_STORY_PATH) -> Story:
         raw = json.loads(Path(path).read_text(encoding="utf-8"))
         nodes = {nid: _parse_node(nid, data) for nid, data in raw["nodes"].items()}
         return cls(raw["meta"], nodes)
