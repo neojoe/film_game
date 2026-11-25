@@ -8,6 +8,25 @@
 - **形态**:网页游戏(Python 后端 + 原生 HTML/JS 前端),**一条命令启动**。
 - **没有 API Key 也能完整玩通**——自带预写剧情和 16 张预生成插画;有 Key 时叠加 AI 实时旁白、自由行动和后日谈。
 
+### 游戏截图
+
+以下均为**真实游戏画面**:由 `python -m tools.take_screenshots` 驱动无头浏览器、连接真实的 GLM 通关两条路线后截取(不是设计稿,也不是 mock 数据)。
+
+<table>
+  <tr>
+    <td width="50%"><img src="docs/screenshots/01-title.jpg" alt="标题页"><br><sub><b>标题页</b>:封面是序幕插画;徽章显示 AI 在线、预计时长和结局收集进度。</sub></td>
+    <td width="50%"><img src="docs/screenshots/02-scene-ai-narration.jpg" alt="AI 旁白"><br><sub><b>AI 旁白</b>:场景标题上标注“AI 旁白”。文字由 GLM 在预写稿基础上结合玩家前面的选择流式改写。</sub></td>
+  </tr>
+  <tr>
+    <td width="50%"><img src="docs/screenshots/03-free-action.jpg" alt="自由行动"><br><sub><b>自由行动</b>:玩家输入一句话,AI 导演把它映射到一个已有选项(橙色斜体是导演的回应),随后进入对应场景。</sub></td>
+    <td width="50%"><img src="docs/screenshots/04-locked-choice.jpg" alt="被锁住的选项"><br><sub><b>条件分支</b>:第 1 项因为玩家没拿到磁带而被锁住,并提示解锁条件;状态变量决定哪些选项可用。</sub></td>
+  </tr>
+  <tr>
+    <td width="50%"><img src="docs/screenshots/05-ending-truth.jpg" alt="好结局"><br><sub><b>好结局 · 真话</b>:后日谈标注“AI 生成”,“你的这一夜”按玩家真实做过的选择回顾。</sub></td>
+    <td width="50%"><img src="docs/screenshots/06-ending-switch-gallery.jpg" alt="普通结局与结局收集"><br><sub><b>普通结局 · 按下开闸键</b>:同一套故事走另一条路线的不同结局;底部是结局收集(金色边框为本局)。</sub></td>
+  </tr>
+</table>
+
 ---
 
 ## 1. 快速开始
@@ -249,6 +268,8 @@ python -m tools.gen_assets               # 补生成缺失的插画(--force 全�
 python -m tools.preview_narration station          # 预览某场景的 AI 旁白及守卫结果
 python -m tools.eval_narration --runs 2            # 统计旁白采纳率与延迟
 python -m tools.try_act "我直接接电话" --at start   # 试验自由行动解析(需先 python run.py)
+python -m tools.take_screenshots                   # 真实通关两条路线并重新生成 README 截图(需先 python run.py;
+                                                   # 另需 playwright 和系统自带的 Edge/Chrome,不必下载内核)
 ```
 
 测试覆盖的重点是“会出事的地方”:
