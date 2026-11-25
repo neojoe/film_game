@@ -245,6 +245,9 @@
   }
 
   // ---------------------------------------------------------------- 选择
+  // 面板内容超出高度时会出现滚动条:选项/反馈出现后滚到底,保证玩家一定看得见
+  function scrollPanelToEnd() { const p = $("panel"); p.scrollTop = p.scrollHeight; }
+
   function renderChoices(scene) {
     G.choicesShown = true;
     const box = $("choices");
@@ -252,12 +255,14 @@
 
     if (scene.ending) {
       box.append(makeChoiceButton(0, { label: "落幕 · 查看这一夜的结局", locked: false }, () => openEnding(scene)));
+      scrollPanelToEnd();
       return;
     }
     scene.choices.forEach((c, i) => {
       box.append(makeChoiceButton(i, c, () => choose(c.id)));
     });
     show($("act"), Boolean(G.meta && G.meta.ai_enabled));
+    scrollPanelToEnd();
   }
 
   function makeChoiceButton(index, choice, onClick) {
@@ -315,10 +320,12 @@
     G.busy = true;
     const button = $("act").querySelector("button"); button.disabled = true;
     const reaction = $("reaction"); reaction.textContent = "导演正在理解你的意图……"; show(reaction, true);
+    scrollPanelToEnd();
     try {
       const res = await api("/api/act", { session_id: G.sid, text });
       input.value = "";
       reaction.textContent = res.reply;
+      scrollPanelToEnd();
       if (res.matched && res.scene) {
         document.querySelectorAll(".choice").forEach((b) => { b.disabled = true; });
         setTimeout(() => showScene(res.scene), 1700);
@@ -350,6 +357,7 @@
     $("recapList").replaceChildren(...scene.recap.map((m) => { const li = document.createElement("li"); li.textContent = m; return li; }));
     renderGallery(end.id);
     show($("panel"), false);
+    show($("hud"), false);  // 否则顶栏会隐约透过结局页的半透明背景
     show($("ending"), true);
     $("ending").scrollTop = 0;
     startEpilogue();

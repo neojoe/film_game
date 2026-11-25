@@ -60,7 +60,7 @@ button { font-family: inherit; }
 
 /* ------------------------------------------------------------ 文本面板 */
 #panel { position: absolute; left: 50%; bottom: 7vh; transform: translateX(-50%); z-index: 4;
-  width: min(920px, calc(100% - 28px)); max-height: 66vh; overflow-y: auto;
+  width: min(920px, calc(100% - 28px)); max-height: 76vh; overflow-y: auto;
   padding: 22px clamp(18px, 3vw, 34px) 22px; border-radius: 14px;
   background: linear-gradient(180deg, rgba(4,12,14,0.55), var(--panel) 28%);
   border: 1px solid rgba(127, 214, 194, 0.14); backdrop-filter: blur(8px);
