@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>听雨 FM · 最后一夜</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <div id="app">
+    <!-- 画面层 -->
+    <div id="stage" aria-hidden="true">
+      <div class="bg" id="bgA"></div>
+      <div class="bg" id="bgB"></div>
+      <canvas id="rain"></canvas>
+      <div id="flash"></div>
+      <div class="vignette"></div>
+      <div class="grain"></div>
+      <div class="bar top"></div>
+      <div class="bar bottom"></div>
+    </div>
+
+    <!-- 顶部状态栏 -->
+    <header id="hud" class="hidden">
+      <div class="clock">
+        <span id="time">00:00</span>
+        <span id="place"></span>
+      </div>
+      <div class="tools">
+        <button id="btnSound" class="tool" title="环境音效(雨声/雷声,WebAudio 实时合成)" aria-pressed="true">♪ 音效</button>
+        <button id="btnVoice" class="tool" title="朗读旁白(浏览器语音合成)" aria-pressed="false">🗣 朗读</button>
+        <button id="btnSkip" class="tool" title="跳过打字动画,直接显示全文">⏭ 跳过</button>
+      </div>
+    </header>
+
+    <!-- 底部文本 / 选择 -->
+    <main id="panel" class="hidden">
+      <div id="sceneTitle"></div>
+      <div id="narration" aria-live="polite"></div>
+      <div id="loading" class="hidden"><span>旁白正在酝酿</span><i></i><i></i><i></i></div>
+      <div id="notice" class="hidden"></div>
+      <div id="choices"></div>
+      <form id="act" class="hidden" autocomplete="off">
+        <input id="actInput" type="text" maxlength="60" placeholder="或者,说出你想做的事……(AI 会理解你的意图)">
+        <button type="submit">行动</button>
+      </form>
+      <div id="reaction" class="hidden"></div>
+    </main>
+
+    <!-- 标题页 -->
+    <section id="title" class="overlay">
+      <div class="title-card">
+        <p class="eyebrow">互动影游 · AIGC</p>
+        <h1 id="gameTitle">听雨 FM · 最后一夜</h1>
+        <p id="tagline" class="tagline"></p>
+        <div class="title-actions">
+          <button id="btnStart" class="primary" disabled>开始游戏</button>
+          <button id="btnContinue" class="ghost hidden">继续上次的夜晚</button>
+        </div>
+        <p class="meta-line">
+          <span id="aiBadge" class="badge">连接中…</span>
+          <span id="durationBadge" class="badge"></span>
+          <span id="endingsBadge" class="badge"></span>
+        </p>
+        <p class="hint">建议戴上耳机,并允许播放声音。选项也可以用键盘 1 / 2 / 3 / 4 选择。</p>
+      </div>
+    </section>
+
+    <!-- 结局页 -->
+    <section id="ending" class="overlay hidden">
+      <div class="ending-card">
+        <p id="endingKind" class="eyebrow"></p>
+        <h2 id="endingName"></h2>
+        <p id="endingSubtitle" class="tagline"></p>
+        <div class="epilogue">
+          <h3>后日谈 <small id="epilogueSource"></small></h3>
+          <p id="epilogueText"></p>
+        </div>
+        <div class="recap">
+          <h3>你的这一夜</h3>
+          <ol id="recapList"></ol>
+        </div>
+        <div id="gallery" class="gallery"></div>
+        <div class="title-actions">
+          <button id="btnAgain" class="primary">再听一遍这个夜晚</button>
+        </div>
+      </div>
+    </section>
+
+    <div id="toast" class="hidden" role="status"></div>
+  </div>
+
+  <script src="/static/audio.js"></script>
+  <script src="/static/game.js"></script>
+</body>
+</html>

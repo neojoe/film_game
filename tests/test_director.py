@@ -15,6 +15,7 @@ from app.llm.director import (
     validate_narration,
 )
 from app.story import Story
+from tests.stubs import StubLLM
 
 
 def run(coro):
@@ -23,31 +24,6 @@ def run(coro):
 
 async def collect(agen):
     return [e async for e in agen]
-
-
-class StubLLM:
-    """替身:按需产出文本块 / 抛异常,并记录收到的 messages。"""
-
-    def __init__(self, *, enabled=True, chunks=(), before=None, after=None, complete_text="", complete_exc=None):
-        self.enabled = enabled
-        self.chunks, self.before, self.after = chunks, before, after
-        self.complete_text, self.complete_exc = complete_text, complete_exc
-        self.messages: list[list[dict]] = []
-
-    async def stream(self, messages, **_):
-        self.messages.append(messages)
-        if self.before:
-            raise self.before
-        for c in self.chunks:
-            yield "stub-model", c
-        if self.after:
-            raise self.after
-
-    async def complete(self, messages, **_):
-        self.messages.append(messages)
-        if self.complete_exc:
-            raise self.complete_exc
-        return self.complete_text
 
 
 @pytest.fixture(scope="module")
